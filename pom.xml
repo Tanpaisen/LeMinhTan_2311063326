@@ -15,6 +15,7 @@
 	<modules>
 		<module>course-service</module>
 		<module>auth-service</module>
+		<module>registration-service</module>
 <!--		<module>api-gateway</module>-->
 	</modules>
 </project>
