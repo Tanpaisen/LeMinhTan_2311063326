@@ -4,18 +4,42 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.2.5</version>
+		<relativePath/>
+	</parent>
+
 	<groupId>vn.edu.crs</groupId>
 	<artifactId>microservices-parent</artifactId>
 	<version>1.0.0</version>
-	<packaging>pom</packaging> <!-- Bắt buộc là pom -->
+	<packaging>pom</packaging>
 
-	<name>Do-An-Microservices</name>
+	<name>microservices-parent</name>
 
-	<!-- Khai báo 3 project con độc lập -->
+	<properties>
+		<java.version>21</java.version>
+		<spring-cloud.version>2023.0.1</spring-cloud.version>
+	</properties>
+
+	<!-- CHỈ KHAI BÁO 4 MODULE BACKEND JAVA -->
 	<modules>
-		<module>course-service</module>
+		<module>api-gateway</module>
 		<module>auth-service</module>
+		<module>course-service</module>
 		<module>registration-service</module>
-<!--		<module>api-gateway</module>-->
 	</modules>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 </project>
