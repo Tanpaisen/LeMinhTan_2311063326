@@ -3,6 +3,7 @@ package vn.edu.crs.apigateway.filter;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
@@ -24,10 +25,13 @@ public class AuthHeaderFilter implements GlobalFilter, Ordered {
             ServerWebExchange exchange,
             GatewayFilterChain chain
     ) {
-
         ServerHttpRequest request = exchange.getRequest();
-
         String path = request.getURI().getPath();
+
+        // 1. Bỏ qua kiểm tra Token cho các request Preflight CORS (OPTIONS)
+        if (request.getMethod() == HttpMethod.OPTIONS) {
+            return chain.filter(exchange);
+        }
 
         boolean isOpen = OPEN_PATHS.stream()
                 .anyMatch(path::startsWith);
@@ -41,11 +45,9 @@ public class AuthHeaderFilter implements GlobalFilter, Ordered {
             return chain.filter(exchange);
         }
 
-        if (!request.getHeaders().containsHeader("Authorization")) {
-
-            exchange.getResponse()
-                    .setStatusCode(HttpStatus.UNAUTHORIZED);
-
+        // 2. Kiểm tra header Authorization đúng chuẩn Spring HttpHeaders
+        if (request.getHeaders().getFirst("Authorization") == null) {
+            exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
             return exchange.getResponse().setComplete();
         }
 
