@@ -2,6 +2,7 @@ import { createContext, useContext, useState, useEffect, type ReactNode } from '
 import type { LoginResponse } from '../types/auth';
 
 interface AuthUser {
+    id: number;
     username: string;
     role: 'ADMIN' | 'STUDENT';
 }
@@ -21,7 +22,6 @@ const USER_KEY = 'crs_user';
 export function AuthProvider({ children }: { children: ReactNode }) {
     const [user, setUser] = useState<AuthUser | null>(null);
 
-    // Khôi phục phiên đăng nhập khi F5 trang
     useEffect(() => {
         const savedUser = localStorage.getItem(USER_KEY);
         const savedToken = localStorage.getItem(TOKEN_KEY);
@@ -32,7 +32,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     const login = (data: LoginResponse) => {
         localStorage.setItem(TOKEN_KEY, data.token);
-        const authUser: AuthUser = { username: data.username, role: data.role };
+        const authUser: AuthUser = { id: data.userId, username: data.username, role: data.role };
         localStorage.setItem(USER_KEY, JSON.stringify(authUser));
         setUser(authUser);
     };
@@ -50,7 +50,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
     const ctx = useContext(AuthContext);
     if (!ctx) throw new Error('useAuth phai duoc dung ben trong AuthProvider');
