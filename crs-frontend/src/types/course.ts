@@ -8,8 +8,21 @@ export interface Course {
 
 export interface PagedResponse<T> {
     content: T[];
-    totalElements: number;
     totalPages: number;
-    number: number;
+    totalElements: number;
     size: number;
+    number: number;
 }
+
+// Bổ sung kiểu dữ liệu cho Form
+export interface CourseFormValues {
+    tenMonHoc: string;
+    soTinChi: string; // Sử dụng string trong form để quản lý input rỗng tốt hơn
+    soChoToiDa: string;
+}
+
+export const emptyCourseForm: CourseFormValues = {
+    tenMonHoc: '',
+    soTinChi: '',
+    soChoToiDa: '',
+};
