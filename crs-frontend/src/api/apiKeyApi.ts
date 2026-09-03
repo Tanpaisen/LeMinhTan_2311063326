@@ -1,5 +1,5 @@
 import axiosClient from './axiosClient';
-import { ApiKey, ApiKeyCreateRequest } from '../types/apiKey';
+import type { ApiKey, ApiKeyCreateRequest } from '../types/apiKey';
 
 export const apiKeyApi = {
     getAll: async (): Promise<ApiKey[]> => {
